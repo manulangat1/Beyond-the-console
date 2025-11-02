@@ -3,6 +3,7 @@ package com.kipchirchirlangat.blog.controllers;
 
 import com.kipchirchirlangat.blog.domain.dtos.ApiErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -43,6 +44,18 @@ public class ErrorController {
         return  new ResponseEntity<>(
                 error, HttpStatus.CONFLICT
         );
-
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public  ResponseEntity<ApiErrorResponse> handleBadRequestException(BadRequestException ex) {
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .message("Incorrect username or password")
+                .build();
+        return  new ResponseEntity<>(
+                error, HttpStatus.UNAUTHORIZED
+        );
+    }
+
+
 }

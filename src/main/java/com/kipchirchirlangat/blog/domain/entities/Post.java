@@ -45,11 +45,11 @@ public class Post {
     private Category category;
 
 
-    @ManyToOne()
+    @ManyToMany()
     @JoinTable(
             name = "post_tags",
             joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn("tag_id")
+            inverseJoinColumns = @JoinColumn(name="tag_id")
     )
     private Set<Tag> tags = new HashSet<>();
 

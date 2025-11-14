@@ -53,6 +53,7 @@ public class SecurityConfig {
                         auth -> auth.requestMatchers(HttpMethod.GET, "api/v1/posts/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "api/v1/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "api/v1/categories/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "api/v1/tags/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "api/v1/tags/**").permitAll()
                                 .anyRequest().authenticated()
                 ).csrf(csrf -> csrf.disable()).sessionManagement(

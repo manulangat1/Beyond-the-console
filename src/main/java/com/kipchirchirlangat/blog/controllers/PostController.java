@@ -1,6 +1,8 @@
 package com.kipchirchirlangat.blog.controllers;
 
 
+import com.kipchirchirlangat.blog.domain.CreatePostRequest;
+import com.kipchirchirlangat.blog.domain.dtos.CreatePostRequestDto;
 import com.kipchirchirlangat.blog.domain.dtos.PostDto;
 import com.kipchirchirlangat.blog.domain.entities.Post;
 import com.kipchirchirlangat.blog.domain.entities.User;
@@ -9,6 +11,7 @@ import com.kipchirchirlangat.blog.services.PostService;
 import com.kipchirchirlangat.blog.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +48,26 @@ public class PostController {
         List<Post> posts = postService.getPostWithDraftStatus(user);
         List<PostDto> postsDTO = posts.stream().map(postMapper::toDto).toList();
         return ResponseEntity.ok(postsDTO);
+    }
+
+
+    @PostMapping
+    public ResponseEntity<PostDto> createPost(
+
+            @RequestBody CreatePostRequestDto createPostRequestDto,
+            @RequestAttribute UUID userId
+
+    ) {
+
+
+        User user = userService.getUserById(userId);
+
+        CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(createPostRequestDto);
+
+        Post createdPost = postService.createPost(user, createPostRequest);
+
+        PostDto createdPostDto = postMapper.toDto(createdPost);
+        return new ResponseEntity<>(createdPostDto, HttpStatus.CREATED);
+
     }
 }

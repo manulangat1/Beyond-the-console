@@ -1,5 +1,6 @@
 package com.kipchirchirlangat.blog.services;
 
+import com.kipchirchirlangat.blog.domain.CreatePostRequest;
 import com.kipchirchirlangat.blog.domain.entities.Post;
 import com.kipchirchirlangat.blog.domain.entities.User;
 
@@ -12,4 +13,7 @@ public interface PostService {
 
 
     List<Post> getPostWithDraftStatus(User user);
+
+    Post createPost(User user
+            , CreatePostRequest createPostRequest);
 }

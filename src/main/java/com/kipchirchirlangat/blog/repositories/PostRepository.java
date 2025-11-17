@@ -4,6 +4,7 @@ import com.kipchirchirlangat.blog.domain.PostStatus;
 import com.kipchirchirlangat.blog.domain.entities.Category;
 import com.kipchirchirlangat.blog.domain.entities.Post;
 import com.kipchirchirlangat.blog.domain.entities.Tag;
+import com.kipchirchirlangat.blog.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -30,4 +31,10 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
     List<Post> findAllByStatus(
             PostStatus status
     );
+
+    List<Post> findAllByAuthorAndStatus(
+            User author, PostStatus status
+    );
+
+
 }

@@ -3,6 +3,7 @@ package com.kipchirchirlangat.blog.services.impl;
 import com.kipchirchirlangat.blog.domain.entities.Category;
 import com.kipchirchirlangat.blog.repositories.CategoryRepository;
 import com.kipchirchirlangat.blog.services.CategoryService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+
     @Override
     public List<Category> listCategories() {
         return categoryRepository.findAllWithPostCount();
@@ -27,21 +29,26 @@ public class CategoryServiceImpl implements CategoryService {
     public Category createCategory(Category category) {
 //        check whether the category already exists.
         String categoryName = category.getName();
-        if ( categoryRepository.existsByNameIgnoreCase(categoryName)) {
-            throw  new IllegalArgumentException("Category already exists with name: " + categoryName);
+        if (categoryRepository.existsByNameIgnoreCase(categoryName)) {
+            throw new IllegalArgumentException("Category already exists with name: " + categoryName);
         }
         return categoryRepository.save(category);
     }
 
     @Override
     public void deleteCategory(UUID id) {
-       Optional<Category> category = categoryRepository.findById(id);
-       if ( category.isPresent()) {
-           if (!category.get().getPosts().isEmpty()) {
-               throw  new IllegalStateException("Category has posts associated with it");
-           }
-           categoryRepository.deleteById(id);
-       }
+        Optional<Category> category = categoryRepository.findById(id);
+        if (category.isPresent()) {
+            if (!category.get().getPosts().isEmpty()) {
+                throw new IllegalStateException("Category has posts associated with it");
+            }
+            categoryRepository.deleteById(id);
+        }
+    }
+
+    @Override
+    public Category getCategoryById(UUID id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Category not found with id " + id));
     }
 
 

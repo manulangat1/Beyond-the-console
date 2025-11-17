@@ -4,6 +4,7 @@ import com.kipchirchirlangat.blog.domain.PostStatus;
 import com.kipchirchirlangat.blog.domain.entities.Category;
 import com.kipchirchirlangat.blog.domain.entities.Post;
 import com.kipchirchirlangat.blog.domain.entities.Tag;
+import com.kipchirchirlangat.blog.domain.entities.User;
 import com.kipchirchirlangat.blog.repositories.PostRepository;
 import com.kipchirchirlangat.blog.services.CategoryService;
 import com.kipchirchirlangat.blog.services.PostService;
@@ -52,8 +53,9 @@ public class PostServiceImpl implements PostService {
         return postRepository.findAllByStatus(PostStatus.PUBLISHED);
     }
 
+
     @Override
-    public List<Post> getPostWithDraftStatus() {
-        return postRepository.findAllByStatus(PostStatus.DRAFT);
+    public List<Post> getPostWithDraftStatus(User user) {
+        return postRepository.findAllByAuthorAndStatus(user, PostStatus.DRAFT);
     }
 }

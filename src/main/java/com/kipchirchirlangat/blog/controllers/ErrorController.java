@@ -2,6 +2,7 @@ package com.kipchirchirlangat.blog.controllers;
 
 
 import com.kipchirchirlangat.blog.domain.dtos.ApiErrorResponse;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
@@ -18,42 +19,53 @@ public class ErrorController {
     public ResponseEntity<ApiErrorResponse> handleException(Exception ex) {
         log.error("Caught exception", ex);
         ApiErrorResponse error = ApiErrorResponse.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value()).message("An unexpected error occured").build();
-        return  new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value()).message("An unexpected error occurred").build();
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public  ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+    public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         ApiErrorResponse error = ApiErrorResponse.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
                 .build();
-        return  new ResponseEntity<>(
+        return new ResponseEntity<>(
                 error, HttpStatus.BAD_REQUEST
         );
 
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public  ResponseEntity<ApiErrorResponse> handleIllegalStateException(IllegalStateException ex) {
+    public ResponseEntity<ApiErrorResponse> handleIllegalStateException(IllegalStateException ex) {
         ApiErrorResponse error = ApiErrorResponse.builder()
                 .status(HttpStatus.CONFLICT.value())
                 .message(ex.getMessage())
                 .build();
-        return  new ResponseEntity<>(
+        return new ResponseEntity<>(
                 error, HttpStatus.CONFLICT
         );
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public  ResponseEntity<ApiErrorResponse> handleBadRequestException(BadRequestException ex) {
+    public ResponseEntity<ApiErrorResponse> handleBadRequestException(BadRequestException ex) {
         ApiErrorResponse error = ApiErrorResponse.builder()
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .message("Incorrect username or password")
                 .build();
-        return  new ResponseEntity<>(
+        return new ResponseEntity<>(
                 error, HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(
+                error, HttpStatus.NOT_FOUND
         );
     }
 

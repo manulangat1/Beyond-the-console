@@ -35,4 +35,12 @@ public class PostController {
         return ResponseEntity.ok(postDtos);
 
     }
+
+
+    @GetMapping(path = "/drafts")
+    public ResponseEntity<List<PostDto>> getAllPostsWithStatusDraft() {
+        List<Post> posts = postService.getPostWithDraftStatus();
+        List<PostDto> postsDTO = posts.stream().map(postMapper::toDto).toList();
+        return ResponseEntity.ok(postsDTO);
+    }
 }

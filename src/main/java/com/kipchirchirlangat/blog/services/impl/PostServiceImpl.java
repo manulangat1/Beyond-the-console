@@ -51,4 +51,9 @@ public class PostServiceImpl implements PostService {
         }
         return postRepository.findAllByStatus(PostStatus.PUBLISHED);
     }
+
+    @Override
+    public List<Post> getPostWithDraftStatus() {
+        return postRepository.findAllByStatus(PostStatus.DRAFT);
+    }
 }

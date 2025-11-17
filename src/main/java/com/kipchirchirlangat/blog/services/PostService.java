@@ -1,6 +1,7 @@
 package com.kipchirchirlangat.blog.services;
 
 import com.kipchirchirlangat.blog.domain.CreatePostRequest;
+import com.kipchirchirlangat.blog.domain.UpdatePostRequest;
 import com.kipchirchirlangat.blog.domain.entities.Post;
 import com.kipchirchirlangat.blog.domain.entities.User;
 
@@ -16,4 +17,9 @@ public interface PostService {
 
     Post createPost(User user
             , CreatePostRequest createPostRequest);
+
+    Post updatePost(
+            UUID id,
+            UpdatePostRequest updatePostRequest
+    );
 }
